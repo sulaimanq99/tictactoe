@@ -56,13 +56,76 @@ def finds_winning_and_losing_moves_ai(board, player,player_key):
         return board
     return random_ai(board,player)
 
+def get_legal_moves(board):
+    moves =[]
+    for i in range(3):
+        for k in range(3):
+            if board[i][k] == None:
+                moves.append((k,i))
+
+    return moves
+
+def opp(player):
+    if player == 'X': return 'O'
+    if player == 'O': return 'X'
+
+def fresh_board(board):
+    fresh = [b[:] for b in board]
+    return fresh
+
+def minmax(board,player,player_moved):
+    scores = []
+    winner = check_winner(board)
+    if winner == player:
+        return 10
+    elif winner == 'Draw':
+        return 0
+    elif winner == opp(player):
+        return -10
+
+    moves = get_legal_moves(board)
+    for move in moves:
+        _board = fresh_board(board)
+        make_move(_board,move,player_moved)
+        player_moved = opp(player_moved)
+        score = minmax(_board,player,player_moved)
+        player_moved = opp(player_moved)
+        scores.append(score)
+
+    if player == player_moved:
+        return max(scores)
+    elif player != player_moved:
+        return min(scores)
+
+def minmax_ai(board,player):
+    best_move = None
+    best_score = None
+    moves = get_legal_moves(board)
+    for move in moves:
+        _board = fresh_board(board)
+        make_move(_board,move,player)
+        player_moved = opp(player)
+        score = minmax(_board,player,player_moved)
+
+        if best_score is None or score > best_score:
+            best_move = move
+            best_score = score
+
+    return make_move(board,best_move,player)
+
+
 def human_player(board,player_token):
     move = get_move(player_token)
     board = make_move(board, move, player_token)
 
+def end_game(outcome):
+    if outcome != 'Draw':
+        print(f'Player {outcome} wins the game')
+    else:
+        print('Draw')
+
 def game_loop_ai():
     board = new_board()
-    move_count = 0
     players = {1:'X', -1:'O'}
     player_key = 1
     render(board)
@@ -70,19 +133,27 @@ def game_loop_ai():
         player = players[player_key]
         human_player(board,player)
         render(board)
-        move_count += 1
         player_key *= -1
-        if check_winner(board, move_count):
+        if check_winner(board):
+            end_game(check_winner(board))
             return
         player = players[player_key]
-        finds_winning_and_losing_moves_ai(board,player,player_key)
+        minmax_ai(board,player)
         render(board)
-        move_count+=1
         player_key *= -1
-        if check_winner(board, move_count):
+        if check_winner(board):
+            end_game(check_winner(board))
             return
 
 
 if __name__ == '__main__':
+    board = [
+        ['X', 'O', 'O'],
+        [None, None, None],
+        [None, None, 'X']
+    ]
+
+    a = minmax_ai(board,'O')
+    render(a)
 
     game_loop_ai()

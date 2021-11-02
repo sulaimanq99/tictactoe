@@ -42,7 +42,6 @@ def is_legal_move(board,player_move):
 
 def game_loop():
     board = new_board()
-    move_count = 0
     players = {1:'X', -1:'O'}
     player_key = 1
     render(board)
@@ -51,40 +50,44 @@ def game_loop():
         move = get_move(player)
         board = make_move(board, move, player)
         render(board)
-        move_count+=1
         player_key *= -1
         #check_winner(board, move_count)
-        if check_winner(board, move_count):
+        if check_winner(board,player):
             return
 
-def check_winner(board, move_count):
-    diagonal = [[],[]]
+def check_winner(board):
+    draw_counter = 0
+    diagonalL = []
+    diagonalR = []
     l = 0
     r = 2
     board_transposed = [[board[j][i] for j in range(len(board))] for i in range(len(board[0]))]
     for i,k in zip(board,board_transposed):
-        if i[l]: diagonal[0].append(i[l])
-        if i[r]: diagonal[1].append(i[r])
+        if i[l]: diagonalL.append(i[l])
+        if i[r]: diagonalR.append(i[r])
         l +=1
         r -=1
         if i[0] != None and i.count(i[0]) == 3 :
-            print('Player ' +i[0] + ' wins')
-            return True
+            #print('Player ' +i[0] + ' wins')
+            return i[0]
         elif k[0] != None and k.count(k[0]) == 3 :
-            print('Player ' +k[0] + ' wins')
-            return True
+            #print('Player ' +k[0] + ' wins')
+            return k[0]
 
-    if (len(diagonal[0]) == 3 and  diagonal[0].count(diagonal[0][0]) == 3):
-            print('Player ' + diagonal[0][1] + ' wins')
-            return True
-    elif (len(diagonal[1]) == 3 and diagonal[1].count(diagonal[1][0]) == 3):
-            print('Player ' + diagonal[0][1] + ' wins')
-            return True
+        if None not in i:
+            draw_counter+=1
+
+    if (len(diagonalL) == 3 and  diagonalL.count(diagonalL[0]) == 3):
+            #print('Player ' + diagonal[0][1] + ' wins')
+            return diagonalL[0]
+    elif (len(diagonalR) == 3 and diagonalR.count(diagonalR[0]) == 3):
+            #print('Player ' + diagonal[0][1] + ' wins')
+            return diagonalR[0]
 
 
-    if move_count == 9:
-        print('Draw')
-        return True
+    if draw_counter == 3:
+        #print('Draw')
+        return 'Draw'
 
 def random_ai(board,player_token):
     x = random.randint(0,2)
