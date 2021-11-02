@@ -45,12 +45,12 @@ def game_loop():
     move_count = 0
     players = {1:'X', -1:'O'}
     player_key = 1
+    render(board)
     while True:
-        render(board)
         player = players[player_key]
         move = get_move(player)
-        new = make_move(board, move, player)
-        render(new)
+        board = make_move(board, move, player)
+        render(board)
         move_count+=1
         player_key *= -1
         #check_winner(board, move_count)
@@ -98,11 +98,8 @@ def random_ai(board,player_token):
 
 
 if __name__ == '__main__':
-    #game_loop()
+    game_loop()
 
-    board = new_board()
-    while True:
-        random_ai(board, 'X')
-        render(board)
+
 
 
