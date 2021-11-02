@@ -19,6 +19,16 @@ def get_move():
     player_move = (X,Y)
     return player_move
 
+def make_move(board,player_move,player_token):
+    x = player_move[0]
+    y = player_move[1]
+    if not board[y][x]:
+        board[y][x] = player_token
+    else:
+        print(str(player_move) + ' is already taken, please try again')
+        player_move = get_move()
+        return make_move(board,player_move,player_token)
+    return board
 
 
 
@@ -32,7 +42,11 @@ def get_move():
 
 
 if __name__ == '__main__':
-    a = new_board()
-    render(a)
-    b = get_move()
-    print(b)
+    board = new_board()
+    render(board)
+    move = get_move()
+    new = make_move(board,move,'X')
+    render(new)
+    move = get_move()
+    new = make_move(board,move,'O')
+    render(new)
