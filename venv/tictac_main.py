@@ -13,6 +13,11 @@ def render(board):
         print(str(i)+'|'+' '.join(grid) + '|')
     print(' -------')
 
+def get_move():
+    X = int(input('Enter your moves x coordinate: '))
+    Y = int(input('Enter your moves y coordinate: '))
+    player_move = (X,Y)
+    return player_move
 
 
 
@@ -29,3 +34,5 @@ def render(board):
 if __name__ == '__main__':
     a = new_board()
     render(a)
+    b = get_move()
+    print(b)
