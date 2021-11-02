@@ -23,13 +23,23 @@ def get_move(player_token):
 def make_move(board,player_move,player_token):
     x = player_move[0]
     y = player_move[1]
-    if not board[y][x]:
+
+    if is_legal_move(board,player_move):
         board[y][x] = player_token
     else:
         print(str(player_move) + ' is already taken, please try again')
         player_move = get_move(player_token)
-        return make_move(board,player_move,player_token)
+        return make_move(board, player_move, player_token)
     return board
+
+def is_legal_move(board,player_move):
+    x = player_move[0]
+    y = player_move[1]
+    if not board[y][x]:
+        return True
+    else:
+        return False
+
 
 def game_loop():
     board = new_board()
@@ -81,3 +91,10 @@ def check_winner(board, move_count):
 if __name__ == '__main__':
     game_loop()
 
+''' if not board[y][x]:
+        board[y][x] = player_token
+    else:
+        print(str(player_move) + ' is already taken, please try again')
+        player_move = get_move(player_token)
+        return make_move(board,player_move,player_token)
+    return board'''
