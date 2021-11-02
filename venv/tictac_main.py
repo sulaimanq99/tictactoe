@@ -53,13 +53,16 @@ def check_winner(board, move_count):
     l = 0
     r = 2
     board_transposed = [[board[j][i] for j in range(len(board))] for i in range(len(board[0]))]
-    for i,k in board:
+    for i,k in zip(board,board_transposed):
         if i[l]: diagonal[0].append(i[l])
         if i[r]: diagonal[1].append(i[r])
         l +=1
         r -=1
-        if i[0] == True and i.count(i[0]) == 3 :
+        if i[0] != None and i.count(i[0]) == 3 :
             print('Player ' +i[0] + ' wins')
+            return True
+        elif k[0] != None and k.count(k[0]) == 3 :
+            print('Player ' +k[0] + ' wins')
             return True
 
     if (len(diagonal[0]) == 3 and  diagonal[0].count(diagonal[0][0]) == 3):
@@ -75,26 +78,6 @@ def check_winner(board, move_count):
         return True
 
 
-
-
-
-
-
-
-
-
-
-
-
 if __name__ == '__main__':
     game_loop()
 
-    '''
-    board = new_board()
-    render(board)
-    move = get_move()
-    new = make_move(board,move,'X')
-    render(new)
-    move = get_move()
-    new = make_move(board,move,'O')
-    render(new)'''
