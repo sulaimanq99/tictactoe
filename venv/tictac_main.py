@@ -1,4 +1,4 @@
-
+import random
 
 def new_board():
     board = []
@@ -39,7 +39,6 @@ def is_legal_move(board,player_move):
         return True
     else:
         return False
-
 
 def game_loop():
     board = new_board()
@@ -87,14 +86,23 @@ def check_winner(board, move_count):
         print('Draw')
         return True
 
+def random_ai(board,player_token):
+    x = random.randint(0,2)
+    y = random.randint(0,2)
+    player_move = (x,y)
+    if is_legal_move(board,player_move):
+        board[y][x] = player_token
+        return board
+    else:
+        return random_ai(board,player_token)
+
 
 if __name__ == '__main__':
-    game_loop()
+    #game_loop()
 
-''' if not board[y][x]:
-        board[y][x] = player_token
-    else:
-        print(str(player_move) + ' is already taken, please try again')
-        player_move = get_move(player_token)
-        return make_move(board,player_move,player_token)
-    return board'''
+    board = new_board()
+    while True:
+        random_ai(board, 'X')
+        render(board)
+
+
