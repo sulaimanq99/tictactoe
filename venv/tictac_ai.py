@@ -39,7 +39,23 @@ def finds_winning_moves_ai(board, player):
     else:
         return random_ai(board,player)
 
+def finds_winning_and_losing_moves_ai(board, player,player_key):
+    players = {1: 'X', -1: 'O'}
+    next_move = next_move_winner(board, player)
+    if next_move != False:
+        y = next_move[0]
+        x = next_move[1]
+        board[y][x] = player
+        return board
 
+    block = players[player_key*-1]
+    next_move = next_move_winner(board, block)
+    if next_move != False:
+        y = next_move[0]
+        x = next_move[1]
+        board[y][x] = player
+        return board
+    return random_ai(board,player)
 
 
 
@@ -53,7 +69,7 @@ def game_loop_ai():
     render(board)
     while True:
         player = players[player_key]
-        finds_winning_moves_ai(board,player)
+        finds_winning_and_losing_moves_ai(board,player,player_key)
         render(board)
         move_count+=1
         player_key *= -1
