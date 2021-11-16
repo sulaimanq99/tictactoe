@@ -7,4 +7,4 @@ Tic tac toe game. Can either play with 2 players, against the computer or run th
 
 3)Makes use of the min max algorithm, programmed recursively. Assumes the player will always make the optimal move, so can potentially be beat this way. Speed can be improved by caching as due to recursion it is quite slow
 
-
+Main files, tictac_main.py and tictac_ai.py can be found in venv folder
